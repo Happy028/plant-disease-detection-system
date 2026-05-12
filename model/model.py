@@ -1,35 +1,95 @@
-import numpy as np
 import os
+import numpy as np
+from PIL import Image
+import tensorflow as tf
 from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
 
-# Load model
-model_path = os.path.join(os.path.dirname(__file__), 'plant_disease_model.h5')
-model = load_model(model_path)
+# -----------------------------
+# Paths
+# -----------------------------
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "plant_disease_model.h5")
 
-# Load class names safely
-dataset_path = r"D:\downloads\plant-disease-detection-main\plant-disease-detection-main\dataset\train"
+# -----------------------------
+# Class Names
+# IMPORTANT:
+# Ye class names tumhare training dataset folders ke order ke according hone chahiye.
+# Agar tumhare paas 38 classes hain, yaha 38 names hone chahiye.
+# -----------------------------
+CLASS_NAMES = [
+    "Apple - Apple Scab",
+    "Apple - Black Rot",
+    "Apple - Cedar Apple Rust",
+    "Apple - Healthy",
+    "Blueberry - Healthy",
+    "Cherry - Powdery Mildew",
+    "Cherry - Healthy",
+    "Corn - Cercospora Leaf Spot",
+    "Corn - Common Rust",
+    "Corn - Northern Leaf Blight",
+    "Corn - Healthy",
+    "Grape - Black Rot",
+    "Grape - Esca Black Measles",
+    "Grape - Leaf Blight",
+    "Grape - Healthy",
+    "Orange - Huanglongbing",
+    "Peach - Bacterial Spot",
+    "Peach - Healthy",
+    "Pepper Bell - Bacterial Spot",
+    "Pepper Bell - Healthy",
+    "Potato - Early Blight",
+    "Potato - Late Blight",
+    "Potato - Healthy",
+    "Raspberry - Healthy",
+    "Soybean - Healthy",
+    "Squash - Powdery Mildew",
+    "Strawberry - Leaf Scorch",
+    "Strawberry - Healthy",
+    "Tomato - Bacterial Spot",
+    "Tomato - Early Blight",
+    "Tomato - Late Blight",
+    "Tomato - Leaf Mold",
+    "Tomato - Septoria Leaf Spot",
+    "Tomato - Spider Mites",
+    "Tomato - Target Spot",
+    "Tomato - Yellow Leaf Curl Virus",
+    "Tomato - Mosaic Virus",
+    "Tomato - Healthy"
+]
 
-class_names = [d for d in sorted(os.listdir(dataset_path)) 
-               if os.path.isdir(os.path.join(dataset_path, d))]
+# -----------------------------
+# Load Model
+# -----------------------------
+@tf.keras.utils.register_keras_serializable()
+def load_trained_model():
+    if not os.path.exists(MODEL_PATH):
+        raise FileNotFoundError(f"Model file not found at: {MODEL_PATH}")
+    return load_model(MODEL_PATH, compile=False)
 
-def preprocess_image(img_path):
-    img = image.load_img(img_path, target_size=(150,150))
-    img_array = image.img_to_array(img)
+model = load_trained_model()
+
+# -----------------------------
+# Preprocess Image
+# -----------------------------
+def preprocess_image(image_path):
+    img = Image.open(image_path).convert("RGB")
+    img = img.resize((150, 150))
+    img_array = np.array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0
     return img_array
 
-def predict(img_path):
-    img_array = preprocess_image(img_path)
-    prediction = model.predict(img_array)
+# -----------------------------
+# Predict Function
+# -----------------------------
+def predict(image_path):
+    img_array = preprocess_image(image_path)
+    prediction = model.predict(img_array, verbose=0)[0]
 
-    index = np.argmax(prediction)
-
-    if index >= len(class_names):
-        return "Unknown", 0.0
-
-    predicted_class = class_names[index]
+    predicted_index = int(np.argmax(prediction))
     confidence = float(np.max(prediction))
 
-    return predicted_class, confidence
+    if predicted_index >= len(CLASS_NAMES):
+        return "Unknown Disease", confidence
+
+    result = CLASS_NAMES[predicted_index]
+    return result, confidence
