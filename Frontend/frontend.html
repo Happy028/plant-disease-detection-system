@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriScan - Plant Disease Detector</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #f4f7f6, #e8f5e9);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            background: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            color: white;
+            padding: 60px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 100, 0, 0.6);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Agritech Elements */
+        .agri-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+        }
+
+        /* Enhanced Image Preview */
+        .image-preview {
+            border: 2px dashed #4CAF50;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            background: #f8fff8;
+            position: relative;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Result Display */
+        .result {
+            background: #f8fff8;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border-left: 5px solid #4CAF50;
+        }
+
+        /* Prevention Tips */
+        .prevention-tips {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        /* Weather Section */
+        .weather-section {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        /* News Feed Section */
+        .news-feed {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        /* Community Section */
+        .community-section {
+            background: #fce4ec;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            background: #fff;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="position: relative; z-index: 1;">AgriScan - Plant Disease Detector</h1>
+        <p style="position: relative; z-index: 1;">Empowering farmers with technology for better crop health.</p>
+    </div>
+    <div class="container">
+        <div class="agri-features">
+            <div class="feature-card">
+                <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-c73c-5230-be25-7c0c44f207cf/raw?se=2025-04-03T07%3A34%3A16Z&sp=r&sv=2024-08-04&sr=b&scid=f342cdb3-40fd-5f2b-a5ac-2cca9a1a6c6e&skoid=4ae7b564-2531-470e-8ddb-6913f4bee2ee&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-02T19%3A11%3A59Z&ske=2025-04-03T19%3A11%3A59Z&sks=b&skv=2024-08-04&sig=jKLp7bfOwhU6MVkxuG0nKtiPrhXLy9IuPX8dvxNRT/U%3D" alt="Real-time Analysis" class="feature-icon">
+                <h3>Real-time Analysis</h3>
+                <p>Instantly analyze plant health using advanced algorithms.</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://st3.depositphotos.com/15795830/32519/i/1600/depositphotos_325193122-stock-photo-the-phone-warns-of-the.jpg" alt="Crop Health Monitoring" class="feature-icon">
+                <h3>Crop Health Monitoring</h3>
+                <p>Monitor your crops' health with regular updates.</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://img.freepik.com/premium-vector/farmer-logo-template-design-vector-emblem-design-concept-creative-symbol-icon_316488-978.jpg" alt="Prevention Guides" class="feature-icon">
+                <h3>Prevention Guides</h3>
+                <p>Access guides to prevent common plant diseases.</p>
+            
+        </div>
+        <div class="image-preview">
+            <h2>Upload Plant Image</h2>
+            <input type="file" id="file-upload" accept="image/*">
+            <img id="preview" src="#" alt="Image Preview" style="display:none;">
+        </div>
+        <div class="result" id="result-display">
+            <h2>Detection Result</h2>
+            <p id="disease-name">Disease Name: <span id="disease"></span></p>
+        </div>
+        <div class="prevention-tips">
+            <h2>Prevention Tips</h2>
+            <ul id="tips-list">
+                <li>Tip 1: Regularly inspect your plants.</li>
+                <li>Tip 2: Use disease-resistant varieties.</li>
+            </ul>
+        </div>
+        <div class="weather-section">
+            <h2>Weather Forecast</h2>
+            <p>Current Weather: Sunny, 25°C</p>
+            <p>Forecast: Rain expected tomorrow.</p>
+        </div>
+        <div class="news-feed">
+            <h2>Latest Agricultural Trends</h2>
+            <p>1. New pest control methods gaining popularity.</p>
+            <p>2. Organic farming techniques on the rise.</p>
+        </div>
+        <div class="community-section">
+            <h2>Community Forum</h2>
+            <p>Join discussions with fellow farmers and share your experiences.</p>
+            <p><a href="forum.html">Visit the Farmers Forum</a></p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy;  AgriScan. All rights reserved.</p>
+        <p><a href="contact.html">Contact Us</a> | <a href="forum.html">Farmers Forum</a></p>
+    </footer>
+
+    <script src="FORNTEND/Backend/uploads.js"></script>
+    <script src="FORNTEND/Backend/server.js.js"></script>
+    <script>
+        document.getElementById('file-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('preview');
+                img.src = e.target.result;
+                img.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        });
+
+        // Simulated disease detection function
+        function detectDisease() {
+            const disease = "Powdery Mildew"; // Example disease
+            document.getElementById('disease').innerText = disease;
+            // Update prevention tips based on detected disease
+            const tips = ["Ensure good air circulation.", "Avoid overhead watering."];
+            const tipsList = document.getElementById('tips-list');
+            tipsList.innerHTML = '';
+            tips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                tipsList.appendChild(li);
+            });
+        }
+
+        // Call detectDisease function for demonstration
+        detectDisease();
+    </script>
+</body>
+</html>
